@@ -368,13 +368,13 @@ private[sql] class AvroDeserializer(
   }
 
   private def createArrayData(elementType: DataType, length: Int): ArrayData = elementType match {
-    case BooleanType => UnsafeArrayData.fromPrimitiveArray(new Array[Boolean](length))
-    case ByteType => UnsafeArrayData.fromPrimitiveArray(new Array[Byte](length))
-    case ShortType => UnsafeArrayData.fromPrimitiveArray(new Array[Short](length))
-    case IntegerType => UnsafeArrayData.fromPrimitiveArray(new Array[Int](length))
-    case LongType => UnsafeArrayData.fromPrimitiveArray(new Array[Long](length))
-    case FloatType => UnsafeArrayData.fromPrimitiveArray(new Array[Float](length))
-    case DoubleType => UnsafeArrayData.fromPrimitiveArray(new Array[Double](length))
+    case BooleanType => UnsafeArrayData.createFreshArray(length, 1)
+    case ByteType => UnsafeArrayData.createFreshArray(length, 1)
+    case ShortType => UnsafeArrayData.createFreshArray(length, 2)
+    case IntegerType => UnsafeArrayData.createFreshArray(length, 4)
+    case LongType => UnsafeArrayData.createFreshArray(length, 8)
+    case FloatType => UnsafeArrayData.createFreshArray(length, 4)
+    case DoubleType => UnsafeArrayData.createFreshArray(length, 8)
     case _ => new GenericArrayData(new Array[Any](length))
   }
 

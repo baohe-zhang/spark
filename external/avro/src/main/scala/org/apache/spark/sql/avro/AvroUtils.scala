@@ -171,6 +171,7 @@ private[sql] object AvroUtils extends Logging {
     protected val stopPosition: Long
 
     private[this] var completed = false
+    private[this] var record: GenericRecord = _
     private[this] var currentRow: Option[InternalRow] = None
 
     def hasNextRow: Boolean = {
@@ -181,7 +182,7 @@ private[sql] object AvroUtils extends Logging {
           completed = true
           currentRow = None
         } else {
-          val record = fileReader.next()
+          record = fileReader.next(record)
           // the row must be deserialized in hasNextRow, because AvroDeserializer#deserialize
           // potentially filters rows
           currentRow = deserializer.deserialize(record).asInstanceOf[Option[InternalRow]]
